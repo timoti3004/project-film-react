@@ -1,73 +1,114 @@
-import MovieCard from "../components/MovieCard"
-import { useState, useEffect } from "react"
-import { searchMovies,getPopularMovies } from "../services/api";
-import "../css/Home.css"
+import MovieCard from "../components/MovieCard";
+import SkeletonMovieCard from "../components/SkeletonMovieCard";
+import { useState, useEffect, useCallback } from "react";
+import { searchMovies, getPopularMovies } from "../services/api";
+import "../css/Home.css";
 
 function Home() {
-    const [searchQuery, setSearchQuery] = useState("");
-    const [movies, setMovies] = useState([]);
-    const [error, setError] = useState(null);
-    const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [movies, setMovies] = useState([]);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const [isSearching, setIsSearching] = useState(false);
 
-    useEffect(() => {
-        const loadPopularMovie = async () => {
-            try {
-                const popularMovies = await getPopularMovies()
-                setMovies(popularMovies)
-            } catch (err) {
-                console.log(err)
-                setError("Failed to set movies...")
-            }
-            finally {
-                setLoading(false)
-            }
-        }
-        loadPopularMovie()
-    }, [])
-
-    const handleSearch = async (e) => {
-        e.preventDefault()
-
-        if(!searchQuery.trim()) return
-        if(loading) return
-
-        setLoading(true)
-        try{
-            const searchResults = await searchMovies(searchQuery)
-            setMovies(searchResults)
-            setError(null)
-        }catch(err) {
-            console.log(err)
-            setError("Failed to search Movie...")
-        } finally {
-            setLoading(false)
-        }
+  const loadPopularMovies = useCallback(async (currentPage) => {
+    if (loading || !hasMore) return;
+    setLoading(true);
+    try {
+      const popularMovies = await getPopularMovies(currentPage);
+      if (popularMovies.length > 0) {
+        setMovies(prev => [...prev, ...popularMovies]);
+        setPage(prev => prev + 1);
+      } else {
+        setHasMore(false);
+      }
+    } catch (err) {
+      setError("Failed to load movies...");
+    } finally {
+      setLoading(false);
     }
+  }, [loading, hasMore]);
 
-    return <div className="home">
-        <form onSubmit={handleSearch} className="search-form">
-            <input 
-                type="text" 
-                placeholder="Search for movies..." 
-                className="search-input"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-            />
-            <button type="submit" className="search-button">Search</button>
-        </form>
+  // useEffect for initial data load
+  useEffect(() => {
+    if (!isSearching) {
+      loadPopularMovies(1);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-        {error && <div className="error-message">{error}</div>}
+  // <<< --- ADD THIS NEW useEffect HOOK HERE --- >>>
+  useEffect(() => {
+    // If the search query is cleared and we were in searching mode
+    if (searchQuery.trim() === '' && isSearching) {
+      // Reset state and fetch popular movies
+      setMovies([]);
+      setPage(1);
+      setHasMore(true);
+      setIsSearching(false);
+      setError(null);
+      loadPopularMovies(1);
+    }
+  }, [searchQuery, isSearching, loadPopularMovies]);
 
-        {loading ? (
-            <div className="loading">Loading...</div>
-        ) : (<div className="movies-grid">
-            {movies.map(
-                (movie) => 
-                    (<MovieCard movie={movie} key={movie.id} />
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!isSearching && window.innerHeight + document.documentElement.scrollTop + 200 >= document.documentElement.offsetHeight && hasMore && !loading) {
+        loadPopularMovies(page);
+      }
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [loading, hasMore, page, isSearching, loadPopularMovies]);
 
-            ))}
-        </div>)}
+  const handleSearch = async (e) => {
+    e.preventDefault();
+    if (!searchQuery.trim()) return;
+    if (loading) return;
+
+    setLoading(true);
+    setIsSearching(true);
+    try {
+      const searchResults = await searchMovies(searchQuery);
+      setMovies(searchResults);
+      setHasMore(false); // No infinite scroll for search results
+      setError(null);
+    } catch (err) {
+      setError("Failed to search movies...");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="home">
+      <form onSubmit={handleSearch} className="search-form">
+        <input
+          type="text"
+          placeholder="Search for movies..."
+          className="search-input"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+        <button type="submit" className="search-button" disabled={loading}>
+          {loading && isSearching ? 'Searching...' : 'Search'}
+        </button>
+      </form>
+
+      {error && <div className="error-message">{error}</div>}
+      <div className="movies-grid">
+        {loading && movies.length === 0 ? (
+          Array.from({ length: 10 }).map((_, index) => <SkeletonMovieCard key={index} />)
+        ) : (
+          movies.map((movie) => <MovieCard movie={movie} key={`${movie.id}-${Math.random()}`} />)
+        )}
+      </div>
+      {loading && movies.length > 0 && !isSearching && <div className="loading">Loading more...</div>}
+      {!hasMore && !isSearching && movies.length > 0 && <div className="loading">You've reached the end!</div>}
     </div>
+  );
 }
 
-export default Home
+export default Home;

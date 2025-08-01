@@ -1,4 +1,5 @@
 import { createContext, useState, useContext, useEffect } from "react";
+import toast from 'react-hot-toast';
 
 const MovieContext = createContext();
 
@@ -7,9 +8,7 @@ export const useMovieContext = () => useContext(MovieContext);
 // 1. Buat fungsi untuk mendapatkan nilai awal dari localStorage
 const getInitialFavorites = () => {
     const storedFavs = localStorage.getItem("favorites");
-    // Gunakan try-catch untuk mencegah error jika data di localStorage tidak valid
     try {
-        // Jika ada data, parse dan kembalikan. Jika tidak, kembalikan array kosong.
         return storedFavs ? JSON.parse(storedFavs) : [];
     } catch (error) {
         console.error("Failed to parse favorites from localStorage", error);
@@ -18,32 +17,27 @@ const getInitialFavorites = () => {
 };
 
 export const MovieProvider = ({ children }) => {
-    // 2. Gunakan fungsi tersebut untuk menginisialisasi state
     const [favorites, setFavorites] = useState(getInitialFavorites);
 
-    // 3. useEffect untuk memuat data bisa DIHAPUS karena sudah ditangani di atas
-    /*
-    useEffect(() => {
-        const storedFavs = localStorage.getItem("favorites");
-        if (storedFavs) setFavorites(JSON.parse(storedFavs));
-    }, []);
-    */
-
-    // useEffect untuk menyimpan data tetap ada dan tidak perlu diubah
     useEffect(() => {
         localStorage.setItem("favorites", JSON.stringify(favorites));
     }, [favorites]);
 
+    const isFavorite = (movieId) => {
+        return favorites.some((movie) => movie.id === movieId);
+    };
+
     const addToFavorites = (movie) => {
         setFavorites((prev) => [...prev, movie]);
+        toast.success(`${movie.title} berhasil ditambahkan ke favorit!`);
     };
 
     const removeFromFavorites = (movieId) => {
-        setFavorites((prev) => prev.filter((movie) => movie.id !== movieId));
-    };
-
-    const isFavorite = (movieId) => {
-        return favorites.some((movie) => movie.id === movieId);
+        const movieToRemove = favorites.find((movie) => movie.id === movieId);
+        if (movieToRemove) {
+            setFavorites((prev) => prev.filter((movie) => movie.id !== movieId));
+            toast.success(`${movieToRemove.title} berhasil dihapus dari favorit.`);
+        }
     };
 
     const value = {
