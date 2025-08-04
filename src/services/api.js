@@ -1,9 +1,8 @@
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY; 
 const BASE_URL = "https://api.themoviedb.org/3";
 
-export const getPopularMovies = async (page = 1) => { // Terima argumen 'page'
+export const getPopularMovies = async (page = 1) => {
     try {
-      // Tambahkan parameter &page=${page} di URL API Anda
       const response = await fetch(`${BASE_URL}/movie/popular?api_key=${API_KEY}&page=${page}`);
       if (!response.ok) {
         throw new Error("Network response was not ok");
@@ -22,4 +21,69 @@ export const searchMovies = async (query) => {
     );
     const data = await response.json()
     return data.results
+};
+
+export const getMovieDetails = async (movieId) => {
+  try {
+    // Endpoint untuk detail film biasanya /movie/{movie_id}
+    const response = await fetch(`${BASE_URL}/movie/${movieId}?api_key=${API_KEY}`);
+    if (!response.ok) {
+      throw new Error("Failed to fetch movie details");
+    }
+    const data = await response.json();
+    return data; // Kembalikan seluruh objek detail
+  } catch (error) {
+    console.error("Error fetching movie details:", error);
+    throw error;
+  }
+};
+
+export const getMovieVideos = async (movieId) => {
+  try {
+    const response = await fetch(`${BASE_URL}/movie/${movieId}/videos?api_key=${API_KEY}`);
+    const data = await response.json();
+    return data.results;
+  } catch (error) {
+    console.error("Error fetching movie videos:", error);
+    throw error;
+  }
+};
+
+// FUNGSI BARU UNTUK MENDAPATKAN PEMERAN (CAST)
+export const getMovieCredits = async (movieId) => {
+  try {
+    const response = await fetch(`${BASE_URL}/movie/${movieId}/credits?api_key=${API_KEY}`);
+    const data = await response.json();
+    return data.cast; // Kita hanya butuh bagian 'cast'
+  } catch (error) {
+    console.error("Error fetching movie credits:", error);
+    throw error;
+  }
+};
+
+// FUNGSI BARU UNTUK MENDAPATKAN FILM SERUPA
+export const getSimilarMovies = async (movieId) => {
+  try {
+    const response = await fetch(`${BASE_URL}/movie/${movieId}/similar?api_key=${API_KEY}`);
+    const data = await response.json();
+    return data.results;
+  } catch (error) {
+    console.error("Error fetching similar movies:", error);
+    throw error;
+  }
+};
+
+export const getMoviesByGenre = async (genreId, page = 1) => {
+  try {
+    // Endpoint untuk discover film berdasarkan genre
+    const response = await fetch(`${BASE_URL}/discover/movie?api_key=${API_KEY}&with_genres=${genreId}&page=${page}`);
+    if (!response.ok) {
+      throw new Error("Failed to fetch movies by genre");
+    }
+    const data = await response.json();
+    return data.results;
+  } catch (error) {
+    console.error("Error fetching movies by genre:", error);
+    throw error;
+  }
 };
