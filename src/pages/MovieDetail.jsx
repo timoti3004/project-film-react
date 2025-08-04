@@ -1,5 +1,5 @@
 import '../css/MovieDetail.css'
-import SkeletonMovieCard from '../components/SkeletonMovieCard';
+import MovieDetailSkeleton from '../components/MovieDetailSkeleton';
 import MovieCard from '../components/MovieCard';
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
@@ -44,7 +44,10 @@ function MovieDetail() {
 
   const trailer = videos.find(video => video.site === "YouTube" && video.type === "Trailer");
 
-  if (loading) return <div className="loading">Loading details...</div>;
+  if (loading) {
+    return <MovieDetailSkeleton />;
+  }
+
   if (error) return <div className="error-message">{error}</div>;
   if (!movie) return <div>Movie not found.</div>;
 

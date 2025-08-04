@@ -1,7 +1,5 @@
-// src/components/SkeletonMovieCard.jsx
-
 import Skeleton from 'react-loading-skeleton';
-import '../css/MovieCard.css'; // Gunakan CSS yang sama agar ukurannya pas
+import '../css/MovieCard.css';
 
 function SkeletonMovieCard() {
   return (

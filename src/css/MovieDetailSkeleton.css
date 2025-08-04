@@ -1,0 +1,62 @@
+/* src/css/MovieDetailSkeleton.css */
+
+/* Mengatur base color & highlight skeleton agar cocok dengan tema gelap */
+.react-loading-skeleton {
+    --base-color: #202020;
+    --highlight-color: #333;
+}
+
+.detail-poster-skeleton {
+    width: 300px;
+    height: 450px;
+    flex-shrink: 0;
+}
+
+.detail-info-skeleton {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    margin-left: 2rem;
+}
+
+.detail-info-skeleton h1 {
+    margin-bottom: 0.5rem;
+}
+
+.tagline-skeleton {
+    margin-bottom: 1.5rem;
+}
+
+.meta-skeleton {
+    margin-bottom: 1.5rem;
+}
+
+.genres-skeleton {
+    margin-bottom: 1.5rem;
+}
+
+.detail-info-skeleton h2 {
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.button-skeleton {
+    margin-top: 1.5rem;
+}
+
+.cast-card-skeleton {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin: 10px;
+}
+
+.cast-card-skeleton strong {
+    margin-top: 10px;
+}
+
+.movie-card-skeleton {
+    margin: 10px;
+    width: calc(20% - 20px); /* Sesuaikan dengan grid Anda */
+}
