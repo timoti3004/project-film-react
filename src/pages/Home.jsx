@@ -31,19 +31,14 @@ function Home() {
     }
   }, [loading, hasMore]);
 
-  // useEffect for initial data load
   useEffect(() => {
     if (!isSearching) {
       loadPopularMovies(1);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // <<< --- ADD THIS NEW useEffect HOOK HERE --- >>>
   useEffect(() => {
-    // If the search query is cleared and we were in searching mode
     if (searchQuery.trim() === '' && isSearching) {
-      // Reset state and fetch popular movies
       setMovies([]);
       setPage(1);
       setHasMore(true);
@@ -73,7 +68,7 @@ function Home() {
     try {
       const searchResults = await searchMovies(searchQuery);
       setMovies(searchResults);
-      setHasMore(false); // No infinite scroll for search results
+      setHasMore(false);
       setError(null);
     } catch (err) {
       setError("Failed to search movies...");

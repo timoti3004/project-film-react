@@ -54,7 +54,7 @@ export const getMovieCredits = async (movieId) => {
   try {
     const response = await fetch(`${BASE_URL}/movie/${movieId}/credits?api_key=${API_KEY}`);
     const data = await response.json();
-    return data.cast; // Kita hanya butuh bagian 'cast'
+    return data; // Kita hanya butuh bagian 'cast'
   } catch (error) {
     console.error("Error fetching movie credits:", error);
     throw error;

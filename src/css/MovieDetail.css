@@ -1,29 +1,24 @@
-/* src/css/MovieDetail.css */
-
-/* Kontainer Utama dengan Flexbox */
 .movie-detail-container {
-    display: flex; /* Mengaktifkan Flexbox */
-    flex-wrap: wrap; /* Izinkan wrap jika layar terlalu kecil */
-    gap: 40px; /* Jarak antara poster (kiri) dan info (kanan) */
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
     padding: 40px 20px;
-    align-items: flex-start; /* Menjaga agar item sejajar dari atas */
+    align-items: flex-start;
     max-width: 1200px;
-    margin: 0 auto; /* Menengahkan kontainer di halaman */
+    margin: 0 auto;
 }
 
-/* Kolom Kiri: Poster */
 .detail-poster {
-    flex-shrink: 0; /* Mencegah poster menyusut */
-    width: 300px; /* Lebar poster yang tetap */
+    flex-shrink: 0;
+    width: 300px;
     height: auto;
     border-radius: 12px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
     object-fit: cover;
 }
 
-/* Kolom Kanan: Info */
 .detail-info {
-    flex: 1; /* Biarkan blok info mengisi sisa ruang yang tersedia */
+    flex: 1;
 }
 
 .detail-info h1 {
@@ -46,19 +41,18 @@
     color: #ccc;
 }
 
-/* Style untuk Genre yang Lebih Menarik */
 .detail-genres {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px; /* Jarak antar tag genre */
+    gap: 10px;
     margin: 20px 0;
 }
 
 .genre-tag {
-    background-color: #333; /* Warna latar belakang gelap */
-    color: #fff; /* Teks putih */
-    padding: 6px 14px; /* Ruang di dalam tag */
-    border-radius: 20px; /* Membuat sudut sangat melengkung (seperti pil) */
+    background-color: #333;
+    color: #fff;
+    padding: 6px 14px;
+    border-radius: 20px;
     font-size: 0.85rem;
     font-weight: 600;
     border: 1px solid #555;
@@ -66,15 +60,14 @@
 }
 
 .genre-tag:hover {
-    background-color: #e50914; /* Warna merah seperti Netflix saat di-hover */
+    background-color: #e50914;
     border-color: #e50914;
     transform: scale(1.05);
 }
 
-/* Tombol Trailer */
 .trailer-button {
     display: inline-block;
-    background-color: #e50914; /* Warna merah Netflix */
+    background-color: #e50914;
     color: white;
     padding: 12px 24px;
     border-radius: 5px;
@@ -87,7 +80,6 @@
     background-color: #f40612;
 }
 
-/* Kontainer untuk Section baru */
 .detail-section {
     max-width: 1200px;
     margin: 40px auto;
@@ -100,17 +92,20 @@
     padding-left: 10px;
 }
 
-/* Daftar Pemeran (Cast) */
+.crew-info {
+    padding-top: 10px;
+}
+
 .cast-container {
     display: flex;
-    overflow-x: auto; /* Membuatnya bisa di-scroll horizontal */
+    overflow-x: auto;
     gap: 20px;
-    padding-bottom: 20px; /* Memberi ruang untuk scrollbar */
+    padding-bottom: 20px;
 }
 .cast-card {
     text-align: center;
     width: 140px;
-    flex-shrink: 0; /* Mencegah kartu menyusut */
+    flex-shrink: 0;
 }
 .cast-card img {
     width: 140px;
@@ -127,22 +122,71 @@
     color: #ccc;
 }
 
-/* Bagian Responsif untuk Tampilan Mobile */
+.detail-poster-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.detail-favorite-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    z-index: 10;
+    opacity: 0;
+    transform: scale(0.9);
+    transition: all 0.2s ease-in-out;
+    background-color: rgba(10, 10, 10, 0.7);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    font-size: 1.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+  
+.detail-poster-wrapper:hover .detail-favorite-btn {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.detail-favorite-btn:hover {
+    transform: scale(1.1);
+  }
+.detail-favorite-btn.active {
+    color: #e50914;
+    background-color: transparent;
+}
+  
+.detail-favorite-btn.active:hover {
+    color: white;
+}
+
+.meta-and-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 10px;
+}
+
 @media (max-width: 768px) {
     .movie-detail-container {
-        flex-direction: column; /* Ubah layout menjadi tumpukan vertikal */
-        align-items: center; /* Tengahkan semua item */
+        flex-direction: column;
+        align-items: center;
         text-align: center;
         gap: 20px;
     }
 
     .detail-poster {
-        width: 80%; /* Lebar poster di mobile */
+        width: 80%;
         max-width: 300px;
     }
 
     .detail-info .detail-meta,
     .detail-genres {
-        justify-content: center; /* Tengahkan juga meta dan genre */
+        justify-content: center;
     }
 }
