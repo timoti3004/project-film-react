@@ -148,11 +148,11 @@ function MovieDetail() {
         <h2>Top Billed Cast</h2>
         <div className="cast-container">
           {cast.slice(0, 10).map(actor => (
-            <div key={actor.cast_id} className="cast-card">
+            <Link to={`/person/${actor.id}`} key={actor.id} className="cast-card">
               <img src={actor.profile_path ? `https://image.tmdb.org/t/p/w185${actor.profile_path}` : placeholderImage} alt={actor.name} />
               <strong>{actor.name}</strong>
               <span>{actor.character}</span>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

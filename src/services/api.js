@@ -87,3 +87,33 @@ export const getMoviesByGenre = async (genreId, page = 1) => {
     throw error;
   }
 };
+
+export const getActorDetails = async (personId) => {
+  try {
+    // Kita akan mengambil 2 data sekaligus: detail personal dan kredit film
+    const personalDetailsPromise = fetch(`${BASE_URL}/person/${personId}?api_key=${API_KEY}`);
+    const movieCreditsPromise = fetch(`${BASE_URL}/person/${personId}/movie_credits?api_key=${API_KEY}`);
+
+    // Jalankan kedua permintaan API secara bersamaan untuk efisiensi
+    const [personalDetailsResponse, movieCreditsResponse] = await Promise.all([
+      personalDetailsPromise,
+      movieCreditsPromise,
+    ]);
+
+    if (!personalDetailsResponse.ok || !movieCreditsResponse.ok) {
+      throw new Error('Failed to fetch actor details.');
+    }
+
+    const personalDetails = await personalDetailsResponse.json();
+    const movieCredits = await movieCreditsResponse.json();
+
+    // Gabungkan hasilnya menjadi satu objek yang rapi
+    return {
+      ...personalDetails,
+      movie_credits: movieCredits,
+    };
+  } catch (error) {
+    console.error("Error fetching actor details:", error);
+    throw error;
+  }
+};
