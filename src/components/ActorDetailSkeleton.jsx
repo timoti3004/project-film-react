@@ -1,5 +1,5 @@
 import React from 'react';
-import '../css/ActorDetailSkeleton.css'; // Kita akan buat file CSS ini selanjutnya
+import '../css/ActorDetailSkeleton.css';
 
 const ActorDetailSkeleton = () => {
   return (

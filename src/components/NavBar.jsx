@@ -9,6 +9,7 @@ function NavBar() {
         <div className="navbar-links">
             <Link to="/" className="nav-link">Home</Link>
             <Link to="/favorites" className="nav-link">Favorites</Link>
+            <Link to="/about" className="nav-link">i</Link>
         </div>
     </nav>
 }

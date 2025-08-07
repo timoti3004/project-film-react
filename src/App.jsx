@@ -5,6 +5,7 @@ import NavBar from './components/NavBar';
 import MovieDetail from './pages/MovieDetail'; 
 import GenrePage from './pages/GenrePages';
 import ActorDetail from './pages/ActorDetail';
+import AboutPage from './pages/AboutPages';
 import { MovieProvider } from './contexts/MovieContext';
 import {Routes, Route} from "react-router-dom"
 
@@ -19,6 +20,7 @@ function App() {
           <Route path="/movie/:movieId" element={<MovieDetail />} />
           <Route path="/genre/:genreId/:genreName" element={<GenrePage />} />
           <Route path="/person/:personId" element={<ActorDetail />} />
+          <Route path="/about" element={<AboutPage />} />
         </Routes>
       </main>
     </MovieProvider>

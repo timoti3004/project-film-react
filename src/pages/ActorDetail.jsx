@@ -74,7 +74,6 @@ function ActorDetail() {
         <h2>Filmografi</h2>
         <div className="movie-grid">
           {actor.movie_credits.cast.map(movie => (
-            // Link ke halaman detail film
             <Link to={`/movie/${movie.id}`} key={movie.credit_id} className="movie-card-link">
               <div className="movie-card">
                 <img 
