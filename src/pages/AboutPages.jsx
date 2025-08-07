@@ -15,7 +15,7 @@ const AboutPage = () => {
         </p>
         
         <p className="developer-credit">
-          Made with ❤️ by <strong>Timotius Ginting</strong>
+          Made with ❤️ by <a href='https://www.instagram.com/timotiginting/'><strong>Timotius Ginting</strong></a>
         </p>
         
         {/* Garis pemisah */}
