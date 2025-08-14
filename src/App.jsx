@@ -6,6 +6,7 @@ import MovieDetail from './pages/MovieDetail';
 import GenrePage from './pages/GenrePages';
 import ActorDetail from './pages/ActorDetail';
 import AboutPage from './pages/AboutPages';
+import { Analytics } from "@vercel/analytics/react";
 import { MovieProvider } from './contexts/MovieContext';
 import {Routes, Route} from "react-router-dom"
 
@@ -22,6 +23,7 @@ function App() {
           <Route path="/person/:personId" element={<ActorDetail />} />
           <Route path="/about" element={<AboutPage />} />
         </Routes>
+        <Analytics />
       </main>
     </MovieProvider>
   );
